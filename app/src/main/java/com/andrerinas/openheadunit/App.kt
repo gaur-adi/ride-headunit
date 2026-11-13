@@ -145,6 +145,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
             com.andrerinas.openheadunit.connection.wifi.scan.WifiScanControl.initialize(this)
 
         val settings = Settings(this) // Create a Settings instance
+        com.andrerinas.openheadunit.bike.BikeDefaults.install(this, settings)
         AppLog.init(settings, this) // Initialize AppLog with settings for conditional logging
 
         // Sync auto-start settings to device-protected storage so that

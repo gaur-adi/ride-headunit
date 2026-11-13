@@ -1349,6 +1349,10 @@ class AapProjectionActivity : SurfaceActivity(), IProjectionView.Callbacks, Vide
     }
 
     override fun onPause() {
+        if (observingSystemRotation) {
+            contentResolver.unregisterContentObserver(systemRotationObserver)
+            observingSystemRotation = false
+        }
         clearTwoFingerTracking()
         isForeground = false
         AppLog.i("AapProjectionActivity: onPause")
@@ -1419,6 +1423,11 @@ class AapProjectionActivity : SurfaceActivity(), IProjectionView.Callbacks, Vide
 
     override fun onResume() {
         super.onResume()
+        if (!observingSystemRotation) {
+            contentResolver.registerContentObserver(android.provider.Settings.System.getUriFor(
+                android.provider.Settings.System.ACCELEROMETER_ROTATION), false, systemRotationObserver)
+            observingSystemRotation = true
+        }
         isForeground = true
         userLeftDeliberately = false
         closeCallRaiseEpisode("the projection is back in front")
@@ -2750,21 +2759,40 @@ class AapProjectionActivity : SurfaceActivity(), IProjectionView.Callbacks, Vide
         commManager.sendKey(keyCode, isPress, null, "key-broadcast")
     }
 
+    // Auto-rotate on follows the system; off deliberately selects landscape for this bike unit.
+    private var observingSystemRotation = false
+    private val systemRotationObserver = object : android.database.ContentObserver(
+        android.os.Handler(android.os.Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) { applyStickyOrientation() }
+    }
+
     private fun applyStickyOrientation() {
-        if (settings.screenOrientation == Settings.ScreenOrientation.AUTO && HeadUnitScreenConfig.isResolutionLocked) {
-            val target = if (HeadUnitScreenConfig.getNegotiatedWidth() > HeadUnitScreenConfig.getNegotiatedHeight()) {
-                android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            } else {
-                android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        if (settings.screenOrientation == Settings.ScreenOrientation.AUTO) {
+            if (requestedOrientation != settings.effectiveScreenOrientation) {
+                requestedOrientation = settings.effectiveScreenOrientation
             }
-            if (requestedOrientation != target) {
-                AppLog.i("[UI_DEBUG] Sticky Orientation: Session active, forcing orientation to $target")
-                requestedOrientation = target
-            }
+            // Also catch a turn made while Settings covered the projection activity.
+            watchdogHandler.removeCallbacks(autoOrientationRestart)
+            watchdogHandler.postDelayed(autoOrientationRestart,
+                com.andrerinas.openheadunit.bike.BikeRotationPolicy.SETTLE_MS)
         }
     }
 
+    private val autoOrientationRestart = Runnable {
+        if (settings.screenOrientation != Settings.ScreenOrientation.AUTO || !isForeground ||
+            !commManager.isConnected || !HeadUnitScreenConfig.isResolutionLocked) return@Runnable
+        val portrait = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
+        if (!com.andrerinas.openheadunit.bike.BikeRotationPolicy.needsReconnect(
+                portrait, HeadUnitScreenConfig.getNegotiatedWidth(), HeadUnitScreenConfig.getNegotiatedHeight()
+            )) return@Runnable
+        AppLog.i("Bike rotation: stable aspect change; reconnecting for ${if (portrait) "portrait" else "landscape"}")
+        commManager.disconnect(isUserExit = false, honorKillOnDisconnect = false,
+            reason = CommManager.DisconnectReason.SETTINGS_RESTART)
+        HeadUnitScreenConfig.init(this, resources.displayMetrics, settings)
+    }
+
     override fun onDestroy() {
+        watchdogHandler.removeCallbacks(autoOrientationRestart)
         clearTwoFingerTracking()
         // TextureView/GLES destruction can arrive after this activity removes its callback.
         // Stop our target now, while it is still valid, without touching a replacement owner.
@@ -2864,8 +2892,13 @@ class AapProjectionActivity : SurfaceActivity(), IProjectionView.Callbacks, Vide
         super.onConfigurationChanged(newConfig)
         nightOverlay?.updateTextSizes()
         AppLog.i("[AapProjectionActivity] onConfigurationChanged: orientation=${newConfig.orientation}")
+        watchdogHandler.removeCallbacks(autoOrientationRestart)
         if (!HeadUnitScreenConfig.isResolutionLocked) {
             HeadUnitScreenConfig.init(this, resources.displayMetrics, settings)
+        } else if (settings.screenOrientation == Settings.ScreenOrientation.AUTO) {
+            // Cancel/re-arm on every change: a quick turn back must not restart a matching session.
+            watchdogHandler.postDelayed(autoOrientationRestart,
+                com.andrerinas.openheadunit.bike.BikeRotationPolicy.SETTLE_MS)
         }
     }
 
@@ -2874,11 +2907,11 @@ class AapProjectionActivity : SurfaceActivity(), IProjectionView.Callbacks, Vide
         if (screenOrientation == Settings.ScreenOrientation.AUTO) {
             applyStickyOrientation()
             if (!HeadUnitScreenConfig.isResolutionLocked) {
-                // Before resolution is locked, allow sensor to orient the activity
-                requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
+                // Before negotiation, follow the system Auto-rotate setting as well.
+                requestedOrientation = settings.effectiveScreenOrientation
             }
         } else {
-            requestedOrientation = screenOrientation.androidOrientation
+            requestedOrientation = settings.effectiveScreenOrientation
         }
     }
 

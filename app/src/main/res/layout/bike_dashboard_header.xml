@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="64dp"
+    android:orientation="horizontal" android:gravity="center_vertical"
+    android:paddingLeft="24dp" android:paddingRight="16dp">
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:text="@string/bike_dashboard_brand" android:textColor="#F4F8F9"
+        android:letterSpacing="0.16" android:textStyle="bold" android:textSize="18sp" />
+    <TextView android:id="@+id/bike_profile_button" android:layout_width="wrap_content"
+        android:layout_height="48dp" android:minWidth="140dp" android:gravity="center"
+        android:paddingLeft="20dp" android:paddingRight="20dp" android:background="@drawable/bike_profile_background"
+        android:text="@string/bike_profile_button" android:textColor="#8CE4C5" android:textSize="14sp"
+        android:textStyle="bold" android:clickable="true" android:focusable="true" />
+</LinearLayout>

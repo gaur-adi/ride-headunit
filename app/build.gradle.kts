@@ -89,15 +89,13 @@ android {
     }
 
     defaultConfig {
-        // Keep the original Play Store application id so the app stays the same listing (reviews,
-        // installs, testers) and existing users just get a normal update. Only the display name
-        // changed to Open Headunit. The code package and namespace stay openheadunit, so the
-        // applicationId deliberately differs from the namespace, like com.google.talk for Hangouts.
-        applicationId = "com.andrerinas.headunitrevived"
-        minSdk = 16
+        // Independent bike edition: keep its identity and data separate from the upstream app.
+        applicationId = "com.aditya.bikeheadunit"
+        minSdk = 23
+        ndk { abiFilters += "arm64-v8a" }
         targetSdk = 36
         versionCode = 123
-        versionName = "4.0.0"
+        versionName = "4.0.0-bike.4"
         setProperty("archivesBaseName", "${applicationId}_${versionName}")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true

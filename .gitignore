@@ -82,3 +82,13 @@ deploy_old_tablet.sh
 .antigravitycli
 .agents
 dev-note8.ps1
+
+# Local signing and device setup exports
+*.keystore
+key.properties
+*.pem
+*.p12
+settings-device*.xml
+
+# Kotlin compiler session cache
+.kotlin/

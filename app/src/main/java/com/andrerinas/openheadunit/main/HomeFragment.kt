@@ -250,6 +250,7 @@ class HomeFragment : Fragment() {
             container.findViewById<View>(id)?.setOnLongClickListener { showPageMenu(widgetPage = null) }
         }
         setupListeners()
+        com.andrerinas.openheadunit.bike.BikeDashboard.bind(this, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

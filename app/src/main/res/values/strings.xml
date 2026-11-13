@@ -9,7 +9,7 @@
     <string name="bt_manufacturer_devices_title">Devices paired through the head unit</string>
     <string name="bt_manufacturer_devices_message">The head unit saved these devices in its own Bluetooth list:\n\n%1$s\n\nAndroid does not list them as paired. They cannot be selected for Android Bluetooth triggers or phone wake-up here. This saved list does not tell us whether they are connected or whether an Android Auto connection is available.</string>
     <string name="bt_manufacturer_devices_android_unavailable">The head unit saved these devices in its own Bluetooth list:\n\n%1$s\n\nThe Android Bluetooth list is currently unavailable. This saved list alone cannot be used for Android Bluetooth triggers or phone wake-up. It does not tell us whether these devices are connected or whether an Android Auto connection is available.</string>
-    <string name="app_name">Open Headunit</string>
+    <string name="app_name">Ride Headunit</string>
     <string name="menu">Menu</string>
     <string name="settings">Settings</string>
 
@@ -259,7 +259,7 @@
     <string name="no_apps_found">No applications found</string>
     <string name="video">Android Auto</string>
     <string name="self_mode">Self Mode</string>
-    <string name="title">Open Headunit</string>
+    <string name="title">Ride Headunit</string>
     <string name="remove">Remove</string>
     <string name="usb">USB</string>
     <string name="wifi">WiFi</string>
@@ -455,10 +455,10 @@
     <string name="gles_view">GLES20</string>
     <string name="auto">Auto</string>
     <string name="screen_orientation">Screen orientation</string>
-    <string name="screen_orientation_help">Sets which way this app turns on the screen. System default follows the system setting, and Auto follows the sensor. The other choices lock one direction. A portrait choice also makes Android Auto send a tall picture. Android Auto gets the shape only when a session starts, so reconnect after a change.</string>
+    <string name="screen_orientation_help">Sets which way this app turns on the screen. System default follows the system setting. Auto follows the system Auto-rotate toggle. When it is off, this bike unit uses landscape. Android Auto reconnects when its shape changes. The other choices lock one direction. A portrait choice also makes Android Auto send a tall picture. Android Auto gets the shape only when a session starts, so reconnect after a change.</string>
     <string name="change_screen_orientation">Change screen orientation</string>
     <string name="orientation_system_default">System Default</string>
-    <string name="orientation_auto_sensor">Auto (Sensor)</string>
+    <string name="orientation_auto_sensor">Auto (system rotation)</string>
     <string name="orientation_landscape">Landscape (0°)</string>
     <string name="orientation_landscape_reverse">Landscape Reverse (180°)</string>
     <string name="orientation_portrait">Portrait (90°)</string>

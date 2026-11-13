@@ -559,9 +559,15 @@ object HomeUiHelper {
         title?.text = title(context, decision, phoneName)
         subtitle?.text = stage?.let { context.getString(it.label) } ?: context.getString(subtitleRes(decision))
         action?.text = context.getString(actionRes(decision))
+        if (decision.primary == Connection.WIFI && decision.status == Status.READY) {
+            kicker?.text = context.getString(R.string.bike_wireless_kicker)
+            title?.text = context.getString(R.string.bike_ready_title)
+            subtitle?.text = context.getString(R.string.bike_ready_subtitle)
+            action?.text = context.getString(R.string.bike_connect)
+        }
         // Nothing to start while a connection is on its way; Cancel is the one thing left to do.
         action?.visibility = if (connecting) View.GONE else View.VISIBLE
-        icon?.setImageResource(iconRes(decision.primary))
+        icon?.setImageResource(if (decision.primary == Connection.WIFI) R.drawable.ic_bike else iconRes(decision.primary))
         val cancel = rootView.findViewById<TextView>(R.id.home_primary_cancel)
         // The status pill's X lived here before: it stops the bring-up, listening included.
         cancel?.visibility = if (reconnecting || stage != null) View.VISIBLE else View.GONE
@@ -992,7 +998,7 @@ object HomeUiHelper {
             @Suppress("DEPRECATION")
             SystemSettings.System.getFloat(resolver, SystemSettings.System.ANIMATOR_DURATION_SCALE, 1f)
         }
-        return scale > 0f
+        return scale > 0f && !com.andrerinas.openheadunit.bike.BikeDefaults.REDUCE_MOTION
     }
 
     private fun subtitleRes(decision: Decision): Int = when {

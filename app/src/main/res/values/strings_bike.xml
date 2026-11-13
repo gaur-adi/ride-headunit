@@ -1,0 +1,15 @@
+<resources>
+    <string name="bike_dashboard_brand">RIDE / HEADUNIT</string>
+    <string name="bike_profile_button">Ride profile</string>
+    <string name="bike_wireless_kicker">YOUR BIKE. CONNECTED.</string>
+    <string name="bike_ready_title">Ready to ride</string>
+    <string name="bike_ready_subtitle">Keep your phone nearby with Bluetooth and Wi-Fi on.</string>
+    <string name="bike_connect">Connect phone</string>
+    <string name="bike_profile_title">Choose your ride profile</string>
+    <string name="bike_profile_applied">Profile saved. Reconnect Android Auto to apply it.</string>
+    <string-array name="bike_profiles">
+        <item>Smooth ride · 720p / 30 FPS</item>
+        <item>Sharper view · 1080p / 30 FPS</item>
+        <item>Compatibility · 720p / TextureView</item>
+    </string-array>
+</resources>

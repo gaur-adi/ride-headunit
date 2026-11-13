@@ -7,12 +7,17 @@
     The bar's tiles scroll when the screen is too short for them at their current size, and Exit
     stays pinned under the scroll view: on a short screen it used to be the tile that got clipped.
 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#080D12">
+    <include layout="@layout/bike_dashboard_header" />
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_buttons_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
     android:orientation="horizontal"
     android:baselineAligned="false"
     android:padding="@dimen/home_gap"
@@ -148,5 +153,7 @@
         <include layout="@layout/view_home_page_dots" />
 
     </LinearLayout>
+
+</LinearLayout>
 
 </LinearLayout>

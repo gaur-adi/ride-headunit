@@ -32,6 +32,22 @@ import java.io.File
  */
 open class BaseActivity : AppCompatActivity() {
 
+    private var observingRotation = false
+    private val rotationToggleObserver = object : android.database.ContentObserver(
+        android.os.Handler(android.os.Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) { applyBikeOrientation() }
+    }
+
+    private fun followsBikeOrientation(): Boolean =
+        this is com.andrerinas.openheadunit.main.MainActivity ||
+        this is com.andrerinas.openheadunit.main.SettingsActivity
+
+    private fun applyBikeOrientation() {
+        if (!followsBikeOrientation()) return
+        val target = Settings(this).effectiveScreenOrientation
+        if (requestedOrientation != target) requestedOrientation = target
+    }
+
     private var currentLanguage: String? = null
     private var currentAppTheme: Settings.AppTheme? = null
     private var currentNightMode: Int = 0
@@ -93,6 +109,12 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        applyBikeOrientation()
+        if (followsBikeOrientation() && !observingRotation) {
+            contentResolver.registerContentObserver(android.provider.Settings.System.getUriFor(
+                android.provider.Settings.System.ACCELEROMETER_ROTATION), false, rotationToggleObserver)
+            observingRotation = true
+        }
         val settings = Settings(this)
         val actualNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (currentLanguage != settings.appLanguage ||
@@ -112,6 +134,14 @@ open class BaseActivity : AppCompatActivity() {
     protected fun applyHudMirroring() {
         val settings = Settings(this)
         findViewById<View>(android.R.id.content)?.scaleX = if (settings.hudMirroring) -1.0f else 1.0f
+    }
+
+    override fun onPause() {
+        if (observingRotation) {
+            contentResolver.unregisterContentObserver(rotationToggleObserver)
+            observingRotation = false
+        }
+        super.onPause()
     }
 
     override fun onDestroy() {

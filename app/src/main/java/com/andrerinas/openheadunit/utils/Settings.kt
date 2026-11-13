@@ -402,6 +402,14 @@ class Settings(private val context: Context) {
             prefs.edit().putInt(KEY_SCREEN_ORIENTATION, orientation.value).apply()
         }
 
+    /** Auto mode follows Quick Settings; a disabled toggle deliberately defaults this bike unit to landscape. */
+    val effectiveScreenOrientation: Int
+        get() = if (screenOrientation == ScreenOrientation.AUTO) {
+            val enabled = android.provider.Settings.System.getInt(context.contentResolver,
+                android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) != 0
+            com.andrerinas.openheadunit.bike.BikeRotationPolicy.automaticOrientation(enabled)
+        } else screenOrientation.androidOrientation
+
     var dpiPixelDensity: Int
         get() = prefs.getInt("dpi-pixel-density", 0) // Default 0 for Auto
         set(value) {
@@ -2423,7 +2431,7 @@ class Settings(private val context: Context) {
 
     enum class ScreenOrientation(val value: Int, val androidOrientation: Int) {
         SYSTEM(0, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER),
-        AUTO(1, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR),
+        AUTO(1, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER),
         LANDSCAPE(2, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
         LANDSCAPE_REVERSE(3, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE),
         PORTRAIT(4, android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT),
