@@ -2,7 +2,7 @@
 
 Turn an old Android phone into a wireless Android Auto display for your motorcycle. Ride Headunit is a bike-focused receiver for an Android phone or tablet, forked from [Open Headunit](https://github.com/andreknieriem/open-headunit). Your main phone supplies Android Auto; the receiver provides the display, touch input and wireless connection.
 
-**[Download the preview APK](https://github.com/gaur-adi/ride-headunit/releases/tag/v4.0.0-bike.4)** · **[Project website and setup guide](https://gaur-adi.github.io/ride-headunit/)** · [Report an issue](https://github.com/gaur-adi/ride-headunit/issues)
+**[Download the preview APK](https://github.com/gaur-adi/ride-unit/releases/tag/v4.0.0-bike.4)** · **[Project website and setup guide](https://gaur-adi.github.io/ride-unit/)** · [Report an issue](https://github.com/gaur-adi/ride-unit/issues)
 
 This independent fork was tested on a OnePlus 10T running Android 15. It is not an official Google, OnePlus or Open Headunit release.
 
@@ -22,7 +22,7 @@ This independent fork was tested on a OnePlus 10T running Android 15. It is not 
 
 This fork builds an **ARM64-only APK for Android 6.0+**. The main phone must support Android Auto.
 
-1. Download `Ride-Headunit-4.0.0-bike.4.apk` from the [preview release](https://github.com/gaur-adi/ride-headunit/releases/tag/v4.0.0-bike.4), verify its SHA-256 checksum if desired, and install it on the receiver phone, finish the first-run notice, and grant the connection permissions.
+1. Download `Ride-Headunit-4.0.0-bike.4.apk` from the [preview release](https://github.com/gaur-adi/ride-unit/releases/tag/v4.0.0-bike.4), verify its SHA-256 checksum if desired, and install it on the receiver phone, finish the first-run notice, and grant the connection permissions.
 2. Keep Bluetooth and Wi-Fi enabled on both phones.
 3. Use **Native** wireless mode on the receiver and pair the main phone through Bluetooth. If the phone cached another receiver's services, forget and pair again while Ride Headunit is listening.
 4. Accept the main phone's Android Auto setup prompts.

@@ -8,8 +8,8 @@ I adapted Open Headunit into a bike-focused Android Auto receiver called Ride He
 
 Tested on a OnePlus 10T running Android 15. Native wireless mode does not require Developer options on the main phone. It is a preview build and compatibility varies by device. It does not add Google Maps motorcycle routing to Android Auto.
 
-Source and APK: https://github.com/gaur-adi/ride-headunit
-Setup: https://gaur-adi.github.io/ride-headunit/
+Source and APK: https://github.com/gaur-adi/ride-unit
+Setup: https://gaur-adi.github.io/ride-unit/
 Upstream: https://github.com/andreknieriem/open-headunit
 
 Feedback on receiver compatibility, reconnection and portrait layouts is welcome. Upstream attribution and AGPL-3.0 licensing are retained.
