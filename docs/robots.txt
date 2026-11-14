@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /ride-headunit/UPSTREAM_README.md
+Sitemap: https://gaur-adi.github.io/ride-headunit/sitemap.xml
